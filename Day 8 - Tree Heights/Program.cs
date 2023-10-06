@@ -14,38 +14,39 @@
 
 class Program
 {
-
-    public static bool isVisible(int startRow, int startCol, int[,] forest)
+    // Scenic score is the number of trees visible in each direction before reaching an edge, or a higher tree
+    public static int scenicScore(int startRow, int startCol, int[,] forest)
     {
-        bool visibleN = true;
-        bool visibleE = true;
-        bool visibleS = true;
-        bool visibleW = true;
         int height = forest[startRow, startCol];
+        int scoreN = 0;
+        int scoreE = 0;
+        int scoreS = 0;
+        int scoreW = 0;
+
         // Check North
         for (int row = startRow-1; row >= 0; row--)
         {
+            scoreN++;
             if (forest[row, startCol] >= height)
             {
-                visibleN = false;
                 break;
             }
         }
         // Check South
         for (int row = startRow + 1; row < forest.GetLength(0); row++)
         {
+            scoreS++;
             if (forest[row, startCol] >= height)
             {
-                visibleS = false;
                 break;
             }
         }
         // Check East
         for (int col = startCol + 1; col < forest.GetLength(1); col++)
         {
+            scoreE++;
             if (forest[startRow, col] >= height)
             {
-                visibleE = false;
                 break;
             }
         } 
@@ -53,15 +54,15 @@ class Program
         // Check West
         for (int col = startCol - 1; col >= 0; col--)
         {
+            scoreW++;
             if (forest[startRow, col] >= height)
             {
-                visibleW = false;
                 break;
             }
         }
 
-        Console.WriteLine(String.Format("({0},{1})\tN:{2}\tE:{3}\tS:{4}\tW:{5}", startRow, startCol, visibleN, visibleE, visibleS, visibleW));
-        return visibleN || visibleE || visibleS || visibleW;
+        Console.WriteLine(String.Format("({0},{1})\tN:{2}\tE:{3}\tS:{4}\tW:{5}", startRow, startCol, scoreN, scoreE, scoreS, scoreW));
+        return scoreN * scoreE * scoreS * scoreW;
     }
     public static void Main(string[] args)
     {
@@ -81,24 +82,24 @@ class Program
 
         }
 
-        // Target of the challenge
-        int numVisibleTrees = 0;
         // Check each tree
-        // Determine if it's visible
+        // Determine ScenicScore
+        // Store the highest score
+        int highestScenicScore = 0;
         for (int row = 0; row < numRows; row++)
         {
             for (int col = 0; col < numCols; col++)
             {
-                bool visible = isVisible(row, col, forest);
-                if(visible)
+                int score = scenicScore(row, col, forest);
+                if (score > highestScenicScore)
                 {
-                    numVisibleTrees++;
+                    highestScenicScore = score;
                 }
-                Console.WriteLine(String.Format("({0},{1}) visibility: {2}\n", row, col, visible));
+                Console.WriteLine(String.Format("({0},{1}) score: {2}\n", row, col, score));
             }
 
         }
-        Console.WriteLine(String.Format("There are {0} visible trees", numVisibleTrees));
+        Console.WriteLine(String.Format("The best tree has a score of {0}", highestScenicScore));
 
     }
     
