@@ -66,8 +66,8 @@ class Program
     public static void Main(string[] args)
     {
         // Read in row of tree heights
-        string[] rows = System.IO.File.ReadAllLines(@"C:\Users\Tom\Documents\Advent\Day 8 - Tree Heights\Day 8 - Tree Heights\data_test.txt");
-
+        //string[] rows = System.IO.File.ReadAllLines(@"C:\Users\Tom\Documents\Advent\Day 8 - Tree Heights\Day 8 - Tree Heights\data_test.txt");
+        string[] rows = System.IO.File.ReadAllLines(@"C:\Users\Tom\Documents\Advent\Day 8 - Tree Heights\Day 8 - Tree Heights\data_full.txt");
         int numRows = rows.Length;
         int numCols = rows[0].Length;
         int[,] forest = new int[numRows, numCols];
